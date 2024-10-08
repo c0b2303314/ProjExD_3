@@ -6,6 +6,7 @@ import math
 import pygame as pg
 
 
+
 WIDTH = 1100  # ゲームウィンドウの幅
 HEIGHT = 650  # ゲームウィンドウの高さ
 NUM_OF_BOMBS = 5
@@ -35,12 +36,12 @@ class Score:
         self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
         self.color = (0, 0, 255)  # 青色
         self.score = 0
-        self.img = self.fonto.render(f"Score: {self.score}", True, self.color)
+        self.img = self.fonto.render(f"スコア: {self.score}", True, self.color)
         self.rct = self.img.get_rect()
         self.rct.center = (100, HEIGHT - 50)
 
     def update(self, screen: pg.Surface):
-        self.img = self.fonto.render(f"Score: {self.score}", True, self.color)
+        self.img = self.fonto.render(f"スコア: {self.score}", True, self.color)
         screen.blit(self.img, self.rct)
 
 
