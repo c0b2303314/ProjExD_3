@@ -167,7 +167,7 @@ def main():
                 txt =fonto.render("Game Over", True, (255, 0, 0)) 
                 screen.blit(txt, [WIDTH//2-150, HEIGHT//2]) 
                 pg.display.update()
-                time.sleep(1)
+                time.sleep(3)
                 return
         
         if beam is not None:
