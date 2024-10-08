@@ -159,6 +159,34 @@ class Bomb:
         screen.blit(self.img, self.rct)
 
 
+class Explosion:
+    """
+    爆発エフェクトに関するクラス
+    """
+    def __init__(self, center):
+        """
+        爆発エフェクト画像Surfaceを生成する
+        引数 center：爆発エフェクトの中心座標タプル
+        """
+        self.imgs = [pg.image.load("fig/explosion.gif"),
+                     pg.transform.flip(pg.image.load("fig/explosion.gif"), True, False)]
+        self.rct = self.imgs[0].get_rect()
+        self.rct.center = center
+        self.life = 30  # 表示時間
+        self.image_index = 0
+
+    def update(self, screen: pg.Surface):
+        """
+        爆発エフェクトを表示する
+        引数 screen：画面Surface
+        """
+        self.life -= 1
+        if self.life > 0:
+            self.image_index = (self.image_index + 1) % 2
+            screen.blit(self.imgs[self.image_index], self.rct)
+        return self.life > 0
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -166,6 +194,7 @@ def main():
     bird = Bird((300, 200))
     beams = []  # 複数のビームを管理するリスト
     bombs = [Bomb((255,0,0),10) for i in range(NUM_OF_BOMBS)]
+    explosions = []  # 爆発エフェクトを管理するリスト
     score = Score()
     clock = pg.time.Clock()
     tmr = 0
@@ -198,6 +227,7 @@ def main():
                         bombs[j] = None
                         bird.change_img(6, screen)
                         score.score += 1
+                        explosions.append(Explosion(bomb.rct.center))
                         pg.display.update()
         
         # Noneでない爆弾とビームだけを残す
@@ -212,6 +242,10 @@ def main():
         
         for bomb in bombs: 
             bomb.update(screen)
+        
+        # 爆発エフェクトの更新
+        explosions = [explosion for explosion in explosions if explosion.update(screen)]
+        
         score.update(screen)
         pg.display.update()
         tmr += 1
